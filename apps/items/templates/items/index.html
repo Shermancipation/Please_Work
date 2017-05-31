@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>My Wish List</title>
+    {%load static%}
+    <link rel="stylesheet" href="{% static 'items/css/style.css' %}">
+  </head>
+  <body>
+    <h1>Hello, {{request.session.name}}!</h1>
+    <a href='{%url 'items:logOut' %}'>Log Out</a>
+    <h3>Your Wish List:</h3>
+    <table>
+      <tr>
+        <th>Item</th>
+        <th>Added by</th>
+        <th>Date Added</th>
+        <th>Action</th>
+      </tr>
+      {% if yourWishList %}
+        {% for item in yourWishList %}
+          <tr>
+            <td><a href="{%url 'items:itemSpecific' id=item.id %}">{{item.name}}</a></td>
+            <td>{{item.added_by.name}}</td>
+            <td>{{item.created_at|date:"M d, Y"}}</td>
+            {% if item.added_by.id == request.session.id %}
+              <td><a href="{%url 'items:itemDelete' id=item.id %}">Delete</a></td>
+            {% else %}
+              <td><a href="{%url 'items:wishlistRemove' id=item.id %}">Remove From Wishlist</a></td>
+            {% endif %}
+          </tr>
+        {% endfor %}
+      {% endif %}
+    </table>
+    <h3>Other Users' Wish Lists:</h3>
+    <table>
+      <tr>
+        <th>Item</th>
+        <th>Added by</th>
+        <th>Date Added</th>
+        <th>Action</th>
+      </tr>
+      {% if otherWishList %}
+        {% for item in otherWishList %}
+          <tr>
+            <td><a href="{%url 'items:itemSpecific' id=item.id %}">{{item.name}}</a></td>
+            <td>{{item.added_by.name}}</td>
+            <td>{{item.created_at|date:"M d, Y"}}</td>
+            <td><a href="{%url 'items:wishListAdd' id=item.id %}">Add to my Wishlist</a></td>
+          </tr>
+        {% endfor %}
+      {% endif %}
+    </table>
+    <br>
+    <a href='{%url 'items:itemPage' %}'>Add Item</a>
+  </body>
+</html>

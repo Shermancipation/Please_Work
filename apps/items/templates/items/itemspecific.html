@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    {% if current_item %}
+        <title>{{current_item.name}}</title>
+    {% endif %}
+  </head>
+  <body>
+    <a href='{%url 'items:logOut' %}'>Log Out</a>
+    <a href='{%url 'items:index' %}'>Back</a>
+
+    {% if current_item %}
+        <h1>{{current_item.name}}</h1>
+        <h3>Users who added this product/item under their wish list:</h3>
+        {% for user in current_item.user.all %}
+          <p>{{user.name}}</p>
+        {% endfor %}
+    {% endif %}
+  </body>
+</html>
